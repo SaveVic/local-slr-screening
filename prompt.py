@@ -1,6 +1,6 @@
 import ollama
 
-from config import OLLAMA_MODEL
+from config import NUM_GPU, OLLAMA_MODEL
 
 
 SCREENING_PROMPT = """
@@ -33,7 +33,7 @@ def screen_paper(title: str, abstract: str):
         response = ollama.generate(
             model=OLLAMA_MODEL,
             prompt=prompt,
-            options={'temperature': 0.0}  # Minimize randomness
+            options={'temperature': 0.0, 'num_gpu': NUM_GPU}  # Minimize randomness
         )
         out = response['response'].strip().upper()
         d = out

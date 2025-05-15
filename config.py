@@ -1,7 +1,7 @@
 import os
 
 # Change this
-NUM_GPU = None
+NUM_GPU = 0
 FILENAME = 'scopus.csv'
 INPUT_COLS = {'title': 'Tittle', 'abstract': 'Abstrak'}
 OLLAMA_MODEL = 'phi4-mini'  # or 'mistral', 'phi3', etc.

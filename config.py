@@ -13,3 +13,4 @@ OUTPUT_DIR = 'outputs'
 INPUT_CSV = os.path.join(SOURCE_DIR, FILENAME)
 SOURCE_NAME = FILENAME.split('.')[0]
 OUTPUT_DATA = os.path.join(OUTPUT_DIR, f'result_{SOURCE_NAME}_{OLLAMA_MODEL}.pkl')
+os.makedirs(OUTPUT_DIR, exist_ok=True)

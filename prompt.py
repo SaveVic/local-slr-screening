@@ -1,38 +1,48 @@
-from langchain_core.prompts import ChatPromptTemplate
+import ollama
 
-human_instruction = """
-Analyze the following academic paper to determine its relevance to the topic: Large Language Models (LLMs) in Education.  
-The response contain this information:
-    1. Relevance: YES/NO  
-    2. Explanation: (1-2 sentences)  
-    3. If relevance is YES:
-        - Use Case: (How the paper applies LLMs in education, e.g., "automated essay scoring")  
-        - Technical Discussion: YES/NO (Does it cover model architecture, training, or fine-tuning?)  
+from config import OLLAMA_MODEL
 
-Please answer it using this structure:
-```
-relevance=False
-explanation=str
-```
-or
-```
-relevance=True
-explanation=str
-use_cases=list[str]
-tech_discussion=True/False
-```
 
-Dont add any explanation or additional text other than that format.
-"""
+SCREENING_PROMPT = """
+You are assisting with a systematic literature review on Large Language Models (LLMs) for Education.
+Evaluate whether this paper is relevant based on its title and abstract, considering these research questions:
 
-human_input = """
-Title: {title}
+1. What architectural designs and model variants of LLMs are most effective for educational applications?
+2. Which prompting techniques and fine-tuning methods optimize LLM performance in educational contexts?
+3. What evaluation frameworks, metrics, and benchmarks are used to assess LLM efficacy in education?
+4. How are domain-specific educational datasets being developed and utilized for LLM training and evaluation?
+5. What technical challenges and computational constraints exist in deploying LLMs in educational environments?
+
+Instructions:
+- Respond ONLY with "RELEVANT" or "IRRELEVANT" based on whether the paper addresses any of these questions.
+- Be inclusive - if the paper might be relevant to any aspect, mark it RELEVANT.
+- Focus on LLM applications in education, not general educational technology.
+
+Paper Title: {title}
 Abstract: {abstract}
+
+Decision: 
 """
 
-template = ChatPromptTemplate([
-    ("system", "You are an expert researcher in computer science."),
-    ("human", human_instruction),
-    ("ai", "Sure, I can do that! Please provide the title and abstract for analysis."),
-    ("human", human_input)
-])
+def screen_paper(title: str, abstract: str):
+    """Use Ollama to screen a single paper"""
+    prompt = SCREENING_PROMPT.format(title=title, abstract=abstract)
+    
+    d = 'Error'
+    try:
+        response = ollama.generate(
+            model=OLLAMA_MODEL,
+            prompt=prompt,
+            options={'temperature': 0.0}  # Minimize randomness
+        )
+        out = response['response'].strip().upper()
+        d = out
+        if out == 'RELEVANT':
+            return 1, None
+        elif out == 'IRRELEVANT':
+            return 0, None
+        else:
+            return -1, out
+    except Exception as e:
+        # print(f"Error screening paper '{title}': {str(e)}")
+        return -1, d

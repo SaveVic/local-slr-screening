@@ -1,5 +1,6 @@
+import os
 import pickle
-from config import OUTPUT_DATA
+from config import OUTPUT_DIR
 
 
 def clean_1(row):
@@ -16,17 +17,25 @@ def clean_1(row):
     return (val, out)
 
 def main():
-    with open(OUTPUT_DATA, 'rb') as f:
-        data = pickle.load(f)
+    for fn in os.listdir(OUTPUT_DIR):
+        _, source, model = fn.split('_')
 
-    cleaned_data = []
-    for row in data:
-        r = clean_1(row)
-        cleaned_data.append(r)
+        fp = os.path.join(OUTPUT_DIR, fn)
+        with open(fp, 'rb') as f:
+            data = pickle.load(f)
+
+        print(f'Clean result data from {source}')
+        cleaned_data = []
+        cnt = [0, 0, 0]
+        for row in data:
+            r = clean_1(row)
+            cnt[r[0]+1] += 1
+            cleaned_data.append(r)
     
-    with open(OUTPUT_DATA, 'wb') as f:
-        pickle.dump(cleaned_data, f)
-    print('Done cleaning')
+        with open(fp, 'wb') as f:
+            pickle.dump(cleaned_data, f)
+        print('Done cleaning')
+        print(f'REL={cnt[2]}, IRREL={cnt[1]}, ERROR={cnt[0]}\n')
 
 if __name__ == "__main__":
     main()

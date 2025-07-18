@@ -1,0 +1,12 @@
+models:
+  local:
+    - id: "phi4-mini"
+      name: "Phi 4 7B"
+    - id: "gemma3"
+      name: "Gemma 3 Normal"
+  api:
+    - id: "deepseek-ai/DeepSeek-V3"
+      name: "DeepSeek V3 Chat"
+    - id: "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8"
+      name: "Llama 4 Maverick"
+      

@@ -44,6 +44,22 @@ class RelevanceData:
     addressed_areas: list[str]
     justification: str
 
+    @staticmethod
+    def from_dict(data: dict):
+        return RelevanceData(
+            is_relevant=data.get("is_relevant", False),
+            addressed_areas=data.get("addressed_areas", []),
+            justification=data.get("justification", ""),
+        )
+
+    @property
+    def to_dict(self):
+        return {
+            "is_relevant": self.is_relevant,
+            "addressed_areas": self.addressed_areas,
+            "justification": self.justification,
+        }
+
 
 class RelevancePrompt:
     key = "relevance"
@@ -65,7 +81,4 @@ class RelevancePrompt:
         if not isinstance(raw_json, dict):
             return None
 
-        is_relevant = raw_json.get("is_relevant", False)
-        addressed_areas = raw_json.get("addressed_areas", [])
-        justification = raw_json.get("justification", "")
-        return RelevanceData(is_relevant, addressed_areas, justification)
+        return RelevanceData.from_dict(raw_json)

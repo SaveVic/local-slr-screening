@@ -21,7 +21,7 @@ class LLMModelInfo:
         if not isinstance(data, dict):
             return None
         id = data.get("id")
-        name = data.get("id")
+        name = data.get("name")
         if id is None or name is None:
             return None
         return LLMModelInfo(str(id), str(name))

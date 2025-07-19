@@ -5,8 +5,10 @@ models:
     - id: "gemma3"
       name: "Gemma 3 Normal"
   api:
-    - id: "deepseek-ai/DeepSeek-V3"
-      name: "DeepSeek V3 Chat"
+    - id: "moonshotai/Kimi-K2-Instruct"
+      name: "Kimi K2 Instruct"
     - id: "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8"
       name: "Llama 4 Maverick"
+    - id: "google/gemma-2-27b-it"
+      name: "Gemma-2 Instruct (27B)"
       

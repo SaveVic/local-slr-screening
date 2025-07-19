@@ -70,4 +70,4 @@ if __name__ == "__main__":
     model_name = client.api_names[model_idx]
     print(f"Starting with {model_name}...")
     for i, (title, abstract) in tqdm(enumerate(values[num_done:])):
-        process(res_dir, model_idx, i, title, abstract)
+        process(res_dir, model_idx, num_done + i, title, abstract)
